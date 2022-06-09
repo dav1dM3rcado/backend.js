@@ -10,4 +10,6 @@ router
   .get(productoCtrl.listarProductos)
   .post(productoCtrl.creaProducto);
 
+router.route("/products/:id").get(productoCtrl.obtenerProducto); // => ahi va un parametro del froend id
+
 export default router;

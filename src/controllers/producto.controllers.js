@@ -2,9 +2,19 @@ import Producto from "../models/producto";
 const productoCtrl = {};
 // agregamos la logica para obtener la lista de productos
 
-productoCtrl.listarProductos = (req, res) => {
+productoCtrl.listarProductos = async (req, res) => {
   //toda la logica que quiero que suceda
-  res.send("hola desde el backend");
+  try {
+    // crear un arreglo de producto y enviar
+    const listaProductos = await Producto.find();
+    res.status(200).json(listaProductos);
+  } catch (error) {
+    console.log(error);
+    //enviar un codigo de error
+    res.status(404).json({
+      mensaje: "error al intentar agregar los productos",
+    });
+  }
 };
 
 productoCtrl.creaProducto = async (req, res) => {
@@ -28,6 +38,23 @@ productoCtrl.creaProducto = async (req, res) => {
     // enviar un codigo de error
     res.status(404).json({
       mensaje: "Error al intentar agregar un producto",
+    });
+  }
+};
+
+productoCtrl.obtenerProducto = async (req, res) => {
+  try {
+    //obtener el id de la consulta del request
+    console.log(req.params.id);
+    // buscar el producto
+    const productoBuscsado = await Producto.findById(req.params.id);
+    //enviar el producto por respuesta para fronend
+    res.status(200).json(productoBuscsado);
+  } catch (error) {
+    console.log(error);
+    // enviar un codigo de error
+    res.status(404).json({
+      mensaje: "Error nose pudo tener el producto buscado",
     });
   }
 };
